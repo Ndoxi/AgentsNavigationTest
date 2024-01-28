@@ -48,7 +48,7 @@ namespace AgentsTest.Editors
             Clear();
             for (int i = 0; i < _initialSize.intValue; i++)
             {
-                Entity newEnemy = (Entity)Instantiate(_enemyPrefab.objectReferenceValue, (Transform)_container.objectReferenceValue);
+                Unit newEnemy = (Unit)Instantiate(_enemyPrefab.objectReferenceValue, (Transform)_container.objectReferenceValue);
                 _enemies.InsertArrayElementAtIndex(i);
                 _enemies.GetArrayElementAtIndex(i).objectReferenceValue = newEnemy;
             }

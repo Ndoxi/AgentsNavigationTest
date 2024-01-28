@@ -1,6 +1,8 @@
 using AgentsTest.Core.Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 using Zenject;
 
@@ -10,13 +12,20 @@ namespace AgentsTest.Core
     {
         public Observable<int> AliveUnitsAmount = new Observable<int>();
         public Observable<int> DeadUnitsAmount = new Observable<int>();
-        public List<Entity> SpawnedEntities => _allies;
+        public List<Unit> SpawnedEntities => _allies;
 
-        [SerializeField] private Entity _allyPrefab;
+        [SerializeField] private Unit _allyPrefab;
+        [SerializeField] private int _fractionId;
         [SerializeField] private PointerInputProcessor _pointerInputProcessor;
 
-        private readonly List<Entity> _allies = new List<Entity>();
+        private readonly List<Unit> _allies = new List<Unit>();
         private EnemySpawner _enemySpawner;
+        private int _spawnerId;
+
+        private void Awake()
+        {
+            _spawnerId = Guid.NewGuid().GetHashCode();
+        }
 
         [Inject]
         private void Construct(EnemySpawner enemySpawner)
@@ -36,13 +45,13 @@ namespace AgentsTest.Core
 
         private void OnTerainClick(Vector3 position)
         {
-            SpawnEntity(position);
+            SpawnUnit(position);
         }
 
-        private void SpawnEntity(Vector3 position)
+        private void SpawnUnit(Vector3 position)
         {
-            Entity newAlly = Instantiate(_allyPrefab, position, Quaternion.identity);
-            newAlly.Initialize(_enemySpawner.SpawnedEntities);
+            Unit newAlly = Instantiate(_allyPrefab, position, Quaternion.identity);
+            newAlly.Initialize(_fractionId, _spawnerId);
             _allies.Add(newAlly);
             AliveUnitsAmount.Value++;
 

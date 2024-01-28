@@ -13,10 +13,11 @@ namespace AgentsTest.Core
         public Observable<int> AliveUnitsAmount = new Observable<int>();
         public Observable<int> DeadUnitsAmount = new Observable<int>();
 
-        public List<Entity> SpawnedEntities => _enemies;
+        public List<Unit> SpawnedEntities => _enemies;
 
         [SerializeField] private EnemyPool _pool;
         [Header("Settings")]
+        [SerializeField] private int _fractionId;
         [SerializeField] private int _initialEnemyCount;
         [SerializeField] private float _spawnInterval = 10;
         [SerializeField] private int _spawnAmount = 10;
@@ -24,13 +25,19 @@ namespace AgentsTest.Core
 
         private AllySpawner _allySpawner;
         private float _lastSpawnTime;
-        private readonly List<Entity> _enemies = new List<Entity>();
+        private readonly List<Unit> _enemies = new List<Unit>();
         private readonly Random _random = new Random(1);
+        private int _spawnerId;
 
         [Inject]
         private void Construct(AllySpawner allySpawner)
         {
             _allySpawner = allySpawner;
+        }
+
+        private void Awake()
+        {
+            _spawnerId = new System.Guid().GetHashCode();
         }
 
         private void Start()
@@ -59,8 +66,8 @@ namespace AgentsTest.Core
         {
             float3 offset = _random.NextFloat3(-_spawnZoneSize, _spawnZoneSize);
             float3 position = (float3)transform.position + offset;
-            Entity newEnemy = _pool.Get();
-            newEnemy.Initialize(_allySpawner.SpawnedEntities);
+            Unit newEnemy = _pool.Get();
+            newEnemy.Initialize(_fractionId, _spawnerId);
             newEnemy.transform.SetPositionAndRotation(position, Quaternion.identity);
 
             _enemies.Add(newEnemy);
