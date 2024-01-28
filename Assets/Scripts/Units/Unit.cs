@@ -15,7 +15,6 @@ namespace AgentsTest.Core
         public int FractionId;
         public int SpawnerId;
         public float ContactDistance;
-        public bool Killed;
     }
 
     public class Unit : MonoBehaviour
@@ -50,6 +49,7 @@ namespace AgentsTest.Core
             if (_world != null)
             {
                 _world.EntityManager.RemoveComponent<Unit>(_entity);
+                _world.EntityManager.RemoveComponent<UnitDead>(_entity);
                 _world.EntityManager.RemoveComponent<UnitData>(_entity);
             }
             OnDeath?.Invoke();

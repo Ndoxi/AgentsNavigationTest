@@ -9,12 +9,9 @@ namespace AgentsTest.Core.Systems
     {
         protected override void OnUpdate()
         {
-            Entities.ForEach((Entity entity, Unit unit, in UnitData unitData) =>
+            Entities.ForEach((Entity entity, in Unit unit, in UnitDead unitDead) =>
             {
-                if (unitData.Killed)
-                {
-                    unit.SetDead();
-                }
+                unit.SetDead();
             }).WithStructuralChanges().WithoutBurst().Run();
         }
     }

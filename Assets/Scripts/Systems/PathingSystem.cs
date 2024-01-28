@@ -24,12 +24,16 @@ namespace AgentsTest.Core.Systems
 
             RequireForUpdate(entityQuery);
 
+            var ecbs = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
+            var buffer = ecbs.CreateCommandBuffer(World.Unmanaged);
+
             Dependency = new MoveJob
             {
                 Entities = entityQuery.ToEntityArray(Allocator.Persistent),
                 TransformLookup = GetComponentLookup<LocalTransform>(true),
                 BodyLookup = GetComponentLookup<AgentBody>(),
-                UnitDataLookup = GetComponentLookup<UnitData>()
+                UnitDataLookup = GetComponentLookup<UnitData>(),
+                ECB = buffer
             }.Schedule(Dependency);
         }
 
@@ -42,6 +46,7 @@ namespace AgentsTest.Core.Systems
             public ComponentLookup<LocalTransform> TransformLookup;
             public ComponentLookup<AgentBody> BodyLookup;
             public ComponentLookup<UnitData> UnitDataLookup;
+            public EntityCommandBuffer ECB;
 
             [BurstCompile]
             public void Execute()
@@ -90,11 +95,8 @@ namespace AgentsTest.Core.Systems
                         targetBody.IsStopped = true;
                         BodyLookup[target] = targetBody;
 
-                        unitData.Killed = true;
-                        UnitDataLookup[entity] = unitData;
-                        UnitData targetData = UnitDataLookup[target];
-                        targetData.Killed = true;
-                        UnitDataLookup[target] = targetData;
+                        ECB.AddComponent<UnitDead>(entity);
+                        ECB.AddComponent<UnitDead>(target);
                     }
                     BodyLookup[entity] = body;
                 }
