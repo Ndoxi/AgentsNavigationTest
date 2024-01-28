@@ -20460,6 +20460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0c6bb3ec9523047bfb1d8f7e624570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _allySpawner: {fileID: 1461300427}
+  _enemySpawner: {fileID: 37035703}
 --- !u!1 &589113058
 GameObject:
   m_ObjectHideFlags: 0

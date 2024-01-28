@@ -2,6 +2,7 @@ using AgentsTest.Core.Input;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace AgentsTest.Core
 {
@@ -9,13 +10,19 @@ namespace AgentsTest.Core
     {
         public Observable<int> AliveUnitsAmount = new Observable<int>();
         public Observable<int> DeadUnitsAmount = new Observable<int>();
-
         public List<Entity> SpawnedEntities => _allies;
 
-        [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private Entity _allyPrefab;
         [SerializeField] private PointerInputProcessor _pointerInputProcessor;
+
         private readonly List<Entity> _allies = new List<Entity>();
+        private EnemySpawner _enemySpawner;
+
+        [Inject]
+        private void Construct(EnemySpawner enemySpawner)
+        {
+            _enemySpawner = enemySpawner;
+        }
 
         private void OnEnable()
         {

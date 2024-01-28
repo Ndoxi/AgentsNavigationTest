@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace AgentsTest.Core.UI
 {
@@ -11,8 +12,16 @@ namespace AgentsTest.Core.UI
         [SerializeField] private EntitiesMonitorRecord _record2;
         [SerializeField] private EntitiesMonitorRecord _record3;
         [SerializeField] private EntitiesMonitorRecord _record4;
-        [SerializeField] private AllySpawner _allySpawner;
-        [SerializeField] private EnemySpawner _enemySpawner;
+
+        private AllySpawner _allySpawner;
+        private EnemySpawner _enemySpawner;
+
+        [Inject]
+        private void Construct(AllySpawner allySpawner, EnemySpawner enemySpawner)
+        {
+            _allySpawner = allySpawner;
+            _enemySpawner = enemySpawner;
+        }
 
         private void OnEnable()
         {

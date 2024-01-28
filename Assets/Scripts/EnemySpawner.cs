@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Zenject;
 using Random = Unity.Mathematics.Random;
 
 namespace AgentsTest.Core
@@ -14,7 +15,6 @@ namespace AgentsTest.Core
 
         public List<Entity> SpawnedEntities => _enemies;
 
-        [SerializeField] private AllySpawner _allySpawner;
         [SerializeField] private EnemyPool _pool;
         [Header("Settings")]
         [SerializeField] private int _initialEnemyCount;
@@ -22,9 +22,16 @@ namespace AgentsTest.Core
         [SerializeField] private int _spawnAmount = 10;
         [SerializeField] private Vector3 _spawnZoneSize = new Vector3(4, 0, 4);
 
+        private AllySpawner _allySpawner;
         private float _lastSpawnTime;
         private readonly List<Entity> _enemies = new List<Entity>();
         private readonly Random _random = new Random(1);
+
+        [Inject]
+        private void Construct(AllySpawner allySpawner)
+        {
+            _allySpawner = allySpawner;
+        }
 
         private void Start()
         {
