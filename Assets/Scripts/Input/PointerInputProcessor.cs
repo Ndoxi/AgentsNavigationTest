@@ -12,10 +12,10 @@ namespace AgentsTest.Core.Input
         [SerializeField] private Camera _camera;
         [SerializeField] private LayerMask _terrainLayer;
 
-        private InputChanel _inputChanel;
+        private IInputChanel _inputChanel;
 
         [Inject]
-        private void Construct(InputChanel inputChanel)
+        private void Construct(IInputChanel inputChanel)
         {
             _inputChanel = inputChanel;
         }

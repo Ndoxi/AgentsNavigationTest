@@ -10,10 +10,10 @@ namespace AgentsTest.Core
     {
         [SerializeField] private float _speed = 15f;
 
-        private InputChanel _inputChanel;
+        private IInputChanel _inputChanel;
 
         [Inject]
-        private void Construct(InputChanel inputChanel) 
+        private void Construct(IInputChanel inputChanel) 
         {
             _inputChanel = inputChanel;
         }
@@ -27,7 +27,8 @@ namespace AgentsTest.Core
             rightDir.y = 0f;
             rightDir.Normalize();
 
-            Vector3 moveDir = forwardDir * _inputChanel.CameraMoveInput.y + rightDir * _inputChanel.CameraMoveInput.x;
+            Vector2 moveInput = _inputChanel.GetCameraMoveInput();
+            Vector3 moveDir = forwardDir * moveInput.y + rightDir * moveInput.x;
             transform.Translate(_speed * Time.deltaTime * moveDir, Space.World);
         }
     }

@@ -11,7 +11,7 @@ namespace AgentsTest.Core.Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<InputChanel>().AsSingle();
+            Container.Bind<IInputChanel>().To<InputChanel>().AsSingle();
             Container.Bind<AllySpawner>().FromComponentOn(_allySpawner.gameObject).AsSingle();
             Container.Bind<EnemySpawner>().FromComponentOn(_enemySpawner.gameObject).AsSingle();
         }

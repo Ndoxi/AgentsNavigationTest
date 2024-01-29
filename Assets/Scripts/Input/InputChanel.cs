@@ -3,20 +3,24 @@ using UnityEngine;
 
 namespace AgentsTest.Core.Input
 {
-    public class InputChanel
+    public class InputChanel : IInputChanel
     {
         public event Action<Vector2> OnClick;
-
-        public Vector2 CameraMoveInput { get; private set; }
+        private Vector2 _cameraMoveInput;
 
         public void SetCameraInput(Vector2 input)
         {
-            CameraMoveInput = input;
+            _cameraMoveInput = input;
         }
 
         public void InvokeClick(Vector2 screenPosition)
         {
             OnClick?.Invoke(screenPosition);
+        }
+
+        public Vector2 GetCameraMoveInput()
+        {
+            return _cameraMoveInput;
         }
     }
 }

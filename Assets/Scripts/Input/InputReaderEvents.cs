@@ -8,11 +8,11 @@ namespace AgentsTest.Core.Input
 {
     public class InputReaderEvents : MonoBehaviour
     {
-        private InputChanel _inputChanel;
         private Vector2 _pointerPos;
+        private IInputChanel _inputChanel;
 
         [Inject]
-        private void Construct(InputChanel inputChanel)
+        private void Construct(IInputChanel inputChanel)
         {
             _inputChanel = inputChanel;
         }
